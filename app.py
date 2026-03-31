@@ -42,7 +42,7 @@ except Exception as e:
 if df is not None:
     st.success("✅ โหลดข้อมูลสำเร็จ!")
     
-    with st.expander("👀 คลิกลูกศรเพื่อดูตารางข้อมูลดิบ"):
+    with st.expander("👀 คลิกเพื่อดูตารางข้อมูลดิบ"):
         st.dataframe(df.head(10)) 
 
     st.markdown("---")
