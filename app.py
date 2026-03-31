@@ -2,11 +2,11 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# 1. ตั้งค่าหน้าจอเว็บไซต์
+# 1 ตั้งค่าหน้าจอเว็บไซต์
 st.set_page_config(page_title="Student Data Dashboard", layout="wide")
 st.title("📊 ระบบวิเคราะห์ข้อมูลนักศึกษา")
 
-# 2. ส่วนแถบเมนูด้านซ้าย (Sidebar) สำหรับรับข้อมูล
+# 2 เมนูด้านซ้าย Sidebar สำหรับรับข้อมูล
 st.sidebar.header("📥 นำเข้าข้อมูล")
 data_source = st.sidebar.radio("เลือกวิธีนำเข้าข้อมูล:", ("อัปโหลดไฟล์จากเครื่อง", "ระบุ URL"))
 
@@ -24,21 +24,21 @@ try:
         elif data_source == "ระบุ URL":
             url = st.sidebar.text_input("วางลิงก์จาก Google Sheets หรือไฟล์ CSV ที่นี่")
             if url:
-                # 🌟 ระบบแปลงลิงก์ Google Sheets อัตโนมัติ
+                # แปลงลิงก์ Google Sheets อัตโนมัติ
                 if "docs.google.com/spreadsheets" in url and "/edit" in url:
                     clean_url = url.split("/edit")[0] + "/export?format=csv"
-                    st.sidebar.success("✨ ระบบแปลงลิงก์ Google Sheets อัตโนมัติทำงานแล้ว!")
+                    st.sidebar.success("✌️ ระบบแปลงลิงก์ Google Sheets อัตโนมัติทำงานแล้ว!")
                 else:
                     clean_url = url 
                 
-                # ให้ Pandas อ่านจากลิงก์ที่แปลงเสร็จแล้ว
+                # Pandas อ่านจากลิงก์ที่แปลงเสร็จแล้ว
                 df = pd.read_csv(clean_url)
                 
-    # คำสั่ง except นี้จะคอยดักจับ Error ทั้งจากการอัปโหลดไฟล์และ URL
+    # คำสั่ง except จะจับ Error ทั้งจากการอัปโหลดไฟล์และ URL
 except Exception as e:
     st.sidebar.error(f"❌ ไม่สามารถดึงข้อมูลได้: โปรดตรวจสอบลิงก์หรือไฟล์อีกครั้ง ({e})")
 
-# 3. ส่วนแสดงผลหลักและการตั้งค่ากราฟ
+# 3 ส่วนแสดงผลหลักและการตั้งค่ากราฟ
 if df is not None:
     st.success("✅ โหลดข้อมูลสำเร็จ!")
     
@@ -57,9 +57,9 @@ if df is not None:
 
     st.markdown("---")
     
-    # 4. ส่วนตรรกะการสร้างกราฟ (แยกตามจำนวนคอลัมน์ที่กราฟต้องการ)
+    # 4 ส่วนตรรกะการสร้างกราฟ (แยกตามจำนวนคอลัมน์ที่กราฟต้องการ)
     try:
-        # 📌 กลุ่มที่ 1: กราฟที่ใช้ข้อมูล 1 คอลัมน์ (นับจำนวน/กระจายตัว)
+        # กราฟที่ใช้ข้อมูล 1 คอลัมน์ (นับจำนวน/กระจายตัว)
         if chart_type in ["Bar Chart", "Pie Chart", "Histogram"]:
             selected_col = st.selectbox("เลือกข้อมูลที่ต้องการวิเคราะห์", df.columns)
             st.subheader(f"📈 กราฟแสดง: {chart_type} ของ {selected_col}")
@@ -77,7 +77,7 @@ if df is not None:
                 
             st.plotly_chart(fig, use_container_width=True)
 
-        # 📌 กลุ่มที่ 2: กราฟที่ต้องการข้อมูล 2 คอลัมน์ (แกน X และ Y)
+        # กราฟที่ต้องการข้อมูล 2 คอลัมน์ (แกน X และ Y)
         elif chart_type in ["Scatter Plot", "Line Chart", "Box Plot"]:
             col1, col2 = st.columns(2)
             with col1:
@@ -99,7 +99,7 @@ if df is not None:
                 
             st.plotly_chart(fig, use_container_width=True)
 
-        # 📌 กลุ่มที่ 3: กราฟแท่งแบบซ้อนทับ (ต้องการแกน X และตัวแบ่งสี)
+        # กราฟแท่งแบบซ้อนทับ (ต้องการแกน X และตัวแบ่งสี)
         elif chart_type == "Stacked Bar Chart":
             col1, col2 = st.columns(2)
             with col1:
