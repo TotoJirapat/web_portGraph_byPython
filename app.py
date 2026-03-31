@@ -13,21 +13,30 @@ data_source = st.sidebar.radio("เลือกวิธีนำเข้าข
 df = None 
 
 try:
-    if data_source == "อัปโหลดไฟล์จากเครื่อง":
-        uploaded_file = st.sidebar.file_uploader("เลือกไฟล์ CSV หรือ Excel", type=["csv", "xlsx"])
-        if uploaded_file is not None:
-            if uploaded_file.name.endswith('.csv'):
-                df = pd.read_csv(uploaded_file)
-            else:
-                df = pd.read_excel(uploaded_file)
+        if data_source == "อัปโหลดไฟล์จากเครื่อง":
+            uploaded_file = st.sidebar.file_uploader("เลือกไฟล์ CSV หรือ Excel", type=["csv", "xlsx"])
+            if uploaded_file is not None:
+                if uploaded_file.name.endswith('.csv'):
+                    df = pd.read_csv(uploaded_file)
+                else:
+                    df = pd.read_excel(uploaded_file)
+                    
+        elif data_source == "ระบุ URL":
+            url = st.sidebar.text_input("วางลิงก์จาก Google Sheets หรือไฟล์ CSV ที่นี่")
+            if url:
+                # 🌟 ระบบแปลงลิงก์ Google Sheets อัตโนมัติ
+                if "docs.google.com/spreadsheets" in url and "/edit" in url:
+                    clean_url = url.split("/edit")[0] + "/export?format=csv"
+                    st.sidebar.success("✨ ระบบแปลงลิงก์ Google Sheets อัตโนมัติทำงานแล้ว!")
+                else:
+                    clean_url = url 
                 
-    elif data_source == "ระบุ URL":
-        url = st.sidebar.text_input("วางลิงก์ URL ของไฟล์ CSV ที่นี่")
-        if url:
-            df = pd.read_csv(url)
-            
+                # ให้ Pandas อ่านจากลิงก์ที่แปลงเสร็จแล้ว
+                df = pd.read_csv(clean_url)
+                
+    # คำสั่ง except นี้จะคอยดักจับ Error ทั้งจากการอัปโหลดไฟล์และ URL
 except Exception as e:
-    st.sidebar.error(f"❌ เกิดข้อผิดพลาดในการดึงข้อมูล: {e}")
+    st.sidebar.error(f"❌ ไม่สามารถดึงข้อมูลได้: โปรดตรวจสอบลิงก์หรือไฟล์อีกครั้ง ({e})")
 
 # 3. ส่วนแสดงผลหลักและการตั้งค่ากราฟ
 if df is not None:
