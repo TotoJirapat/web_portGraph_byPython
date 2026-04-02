@@ -48,7 +48,7 @@ if df is not None:
     st.markdown("---")
     st.subheader("⚙️ ปรับแต่งกราฟ")
     
-    # เพิ่มตัวเลือกกราฟใหม่ๆ เข้าไป
+    # ตัวเลือกกราฟ
     chart_list = [
         "Bar Chart", "Pie Chart", "Histogram", 
         "Line Chart", "Scatter Plot", "Box Plot", "Stacked Bar Chart"
